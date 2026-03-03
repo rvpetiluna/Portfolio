@@ -1,0 +1,236 @@
+/* src/index.css */
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('./fonts/Minecraft.ttf') format('woff2'),;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Helps prevent flash of unstyled text */
+}
+
+@font-face {
+  font-family: 'VCR_OSD_MONO';
+  src: url('./fonts/VCR_OSD_MONO_1.001.ttf') format('woff2'),;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Helps prevent flash of unstyled text */
+}
+
+.wallpaper {
+    background-image: url('./assests/city of tears.gif'); 
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1; 
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    background-color: rgb(30, 30, 30);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-family: 'Minecraft', sans-serif;
+    padding-left: 1rem;
+    user-select: none;
+}
+
+.taskbar_date_time {
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center;
+    justify-content: center;
+    width: 150px;
+}
+
+.icon_name {
+    font-family: 'Minecraft', sans-serif;
+    margin-top: 10px;
+    font-size: 1rem;
+    text-align: center;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    user-select: none;
+    cursor: pointer;
+}
+
+.desktop_icon_wrapper {
+    height: 104px;
+    width: 104px;
+    margin: 5px;
+}
+
+.desktop_icon_container {
+    color: rgb(255, 255, 255);
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.desktop_icon_container:hover {
+    background-color: rgba(0, 110, 183, 0.2) !important;
+}
+
+.desktop {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    overflow-y: auto;
+}
+
+.title_bar {
+    display: flex;
+    flex-direction: row;
+    border-radius: 5px 5px 0 0;
+    user-select: none;
+    background-color: rgb(30, 30, 30);
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-family: 'Minecraft', sans-serif;
+}
+
+.title_bar_button {
+    height: 30px;
+    width: 40px;
+    border-radius: 0px 5px 0 0;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+}
+
+.title_bar_button:hover {
+    background-color: rgb(232, 17, 35);
+}
+
+/* Modal transitions */
+.modal_root {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background: rgba(0,0,0,0);
+    transition: background 220ms ease-in-out;
+}
+
+.modal_root.modal_visible {
+    background: rgba(0, 0, 0, 0.600);
+}
+
+.modal_content {
+    border-radius: 5px;
+    height: auto;
+    max-width: auto;
+    max-height: 90vh; 
+    overflow-y: auto; 
+    opacity: 0;
+    transition: transform 220ms ease-in-out, opacity 220ms ease-in-out;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.modal_content.modal_content_visible {
+    opacity: 1;
+}
+
+.about_me_container {
+    width: 700px;
+    background-color: #000000;
+    color: white;
+    max-height: 90vh; /* Adjusted max-height for mobile */
+    overflow-y: auto;
+    font-family: 'Minecraft', sans-serif;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.about_box1 {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: auto;
+    background-color: rgb(0, 0, 0);
+}
+
+.about_box2 {
+    width: 300px;
+    margin-left: 50px;
+    justify-content: center;
+    align-content: center;
+}
+
+.Typewriter {
+    color: rgb(255, 100, 100);
+    font-size: 1.5rem;
+
+}
+
+@media screen and (max-width: 701px) {
+    .about_me_container{
+        min-width: 300px;
+        max-width: 350px;
+    }
+
+    .about_box1 {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about_box2 {
+        min-width: 250px !important;
+        margin-top: 20px;
+        margin-left: 0px;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .modal_root {
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .modal_content {
+        margin: 1rem;
+        max-height: calc(100vh - 1rem);
+        max-width: 400px;
+        overflow-y: auto;
+    }
+    .Typewriter {
+        color: rgb(255, 100, 100);
+        font-size: 1rem;
+    }
+}
