@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio built with React to showcase my work, skills, and professional journey.
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack:
 
 Frontend: React.js
 
@@ -12,7 +12,7 @@ Styling: CSS
 
 ## 📷 Preview: [Insert Link]
 
-
+## 🎨 Assets Used:
 Wallpapers https://www.artstation.com/megalithiccat
 
 Pixel Icon Library https://pixeliconlibrary.com/
