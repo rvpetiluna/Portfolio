@@ -22,7 +22,7 @@ export default function Aboutme() {
                     />
                 </div>
                 <div className='about_box2'>
-                    <div style={{fontSize:'3rem'}}>
+                    <div style={{fontSize:'3rem', color:'rgb(255, 0, 0)', textShadow: '0 0 10px rgb(148, 32, 32)'}}>
                         Hello, I'm Ron Vanz
                     </div>
                     <hr style={{border: '1px solid rgb(255, 100, 100)', margin:'0px 0px 10px 0px',width:"100%" }}></hr> 

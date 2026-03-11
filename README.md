@@ -1,4 +1,4 @@
-## 🚀 Ron Vanz Petiluna | Portfolio
+## 🚀 RV Petiluna | Portfolio
 
 A modern, responsive portfolio built with React to showcase my work, skills, and professional journey.
 

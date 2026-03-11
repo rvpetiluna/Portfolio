@@ -3,6 +3,7 @@ import './index.css'
 import Taskbar from './components/taskbar';
 import DesktopIcon from './components/DesktopIcon';
 import Aboutme from './Contents/AboutMe';
+import Projects from './Contents/Projects';
 
 function App() {
 
@@ -28,7 +29,7 @@ function App() {
         <DesktopIcon 
           icon="hn hn-folder-solid" 
           iconName="Featured Projects"
-          modalContent={<p>Projects here</p>}
+          modalContent={<Projects/>}
         />
         <DesktopIcon 
           icon="hn hn-phone-ringing-high-solid" 
