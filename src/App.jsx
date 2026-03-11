@@ -13,13 +13,13 @@ function App() {
 
   const [windowState, setWindowState] = useState({
     "About Me": { 
-      x: 100, y: 50, width: 700, height: 800, 
-      minWidth: 400, minHeight: 800, // Higher minHeight for About Me
+      x: 100, y: 50, width: 700, height: 500, 
+      minWidth: 600, minHeight: 500,
       z: 10, isOpen: false, isMinimized: false, isMaximized: false 
     },
     "Featured Projects": { 
       x: 150, y: 100, width: 900, height: 600, 
-      minWidth: 600, minHeight: 300, // Featured Projects can go shorter
+      minWidth: 600, minHeight: 600,
       z: 10, isOpen: false, isMinimized: false, isMaximized: false 
     },
   });

@@ -5,7 +5,7 @@ export default function Modal({
   if (!isOpen || isMinimized) return null;
 
   const style = isMaximized ? {
-    top: 0, left: 0, width: '100vw', height: 'calc(100vh - 3rem)', zIndex: 9999
+    top: 0, left: 0, width: '100vw', height: 'calc(100vh - 3.1rem)', zIndex: 9999
   } : {
     left: `${position.x}px`, top: `${position.y}px`, width: `${position.width}px`, height: `${position.height}px`, zIndex: position.z,
   };
