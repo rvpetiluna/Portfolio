@@ -35,6 +35,29 @@
         transform: scale(1) translateY(0); 
     }
 }
+.resizer { position: absolute; z-index: 1001; }
+
+/* Edges */
+.resizer-t { cursor: n-resize; top: -4px; left: 0; width: 100%; height: 8px; }
+.resizer-b { cursor: s-resize; bottom: -4px; left: 0; width: 100%; height: 8px; }
+.resizer-l { cursor: w-resize; left: -4px; top: 0; height: 100%; width: 8px; }
+.resizer-r { cursor: e-resize; right: -4px; top: 0; height: 100%; width: 8px; }
+
+/* Corners */
+.resizer-tl { cursor: nw-resize; top: -6px; left: -6px; width: 12px; height: 12px; }
+.resizer-tr { cursor: ne-resize; top: -6px; right: -6px; width: 12px; height: 12px; }
+.resizer-bl { cursor: sw-resize; bottom: -6px; left: -6px; width: 12px; height: 12px; }
+.resizer-br { cursor: se-resize; bottom: -6px; right: -6px; width: 12px; height: 12px; }
+
+.resize_handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    cursor: nwse-resize;
+    z-index: 1000;
+}
 
 .wallpaper {
     position: fixed;
@@ -213,6 +236,7 @@
     display: block !important;
     margin: 0;
     background-color: rgba(255, 0, 0, 0);
+    box-sizing: border-box;
 }
 
 .modal_handle {
@@ -241,27 +265,25 @@
 }
 
 .modal_body_content {
-    flex-grow: 1;
-    overflow: auto;
-    border-radius: 0px 0px 5px 5px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content from breaking the modal shape */
+    min-height: 0;    /* Critical for flexbox children to shrink below their content size */
 }
 
 .modal_content.modal_content_visible {
     opacity: 1;
 }
 
-.about_me_container {
-    width: 700px;
-    background-color: #000000;
+.projects_container, .about_me_container {
+    overflow-y: auto; /* If window is < 300px, About Me will scroll internally */
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     color: white;
-    max-height: 90vh;
-    overflow-y: auto;
-    font-family: 'Minecraft', sans-serif;
-    user-select: none;
-    align-items: center;
-    justify-content: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
 }
 
 .about_box1 {
@@ -269,7 +291,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 20px;
     width: auto;
     background-color: rgb(0, 0, 0);
 }
@@ -289,18 +310,7 @@
     text-shadow: 0 0 10px rgb(10, 255, 0)
 }
 
-.projects_container{
-    width: 70vw;
-    background-color: rgb(25, 25, 25);
-    color: white;
-    height: 80vh;
-    max-height: 90vh;
-    overflow-y: auto;
-    user-select: none;
-    font-style: 'SegoeUIVF';
-    display: flex;
-    flex-direction: column;
-}
+
 
 .projects_topbar{
     height: 4rem;
@@ -331,29 +341,29 @@ i.hn-refresh-solid:hover {
     color: #ffffff;
 }
 
-.projects_parentbox{
+.projects_parentbox {
     display: flex;
-    flex-direction: row;
-    height: 100vh;
+    flex: 1;
+    min-height: 0; /* Important for flex overflow */
 }
 
 .projects_box1{
     background-color: rgb(25, 25, 25);
-    width: 20vw;
     height: 100%;
+    overflow-y: auto;
     border-right: solid 1px rgb(43, 43, 43);
 }
 
 .projects_box2{
     background-color: rgb(25, 25, 25);
-    width: 60vw;
     height: 100%;
+    overflow-y: auto;
 }
 
 .projects_box3{
     background-color: rgb(32, 32, 32);
-    width: 20vw;
     height: 100%;
+    overflow-y: auto;
     border-left: solid 1px rgb(43, 43, 43);
 }
 

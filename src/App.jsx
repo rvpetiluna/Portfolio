@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState, useEffect } from 'react'
 import './index.css'
 import Taskbar from './components/taskbar';
@@ -9,21 +8,21 @@ import Projects from './Contents/Projects';
 function App() {
   const [maxZ, setMaxZ] = useState(100);
   const [draggingId, setDraggingId] = useState(null);
+  const [resizing, setResizing] = useState({ id: null, dir: null });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const [windowState, setWindowState] = useState({
-    "About Me": { x: 100, y: 50, z: 10, isOpen: false, isMinimized: false, isMaximized: false },
-    "Featured Projects": { x: 150, y: 100, z: 10, isOpen: false, isMinimized: false, isMaximized: false },
-    "Contact": { x: 200, y: 150, z: 10, isOpen: false, isMinimized: false, isMaximized: false },
-    "Mini Games": { x: 250, y: 200, z: 10, isOpen: false, isMinimized: false, isMaximized: false }
+    "About Me": { 
+      x: 100, y: 50, width: 700, height: 800, 
+      minWidth: 400, minHeight: 800, // Higher minHeight for About Me
+      z: 10, isOpen: false, isMinimized: false, isMaximized: false 
+    },
+    "Featured Projects": { 
+      x: 150, y: 100, width: 900, height: 600, 
+      minWidth: 600, minHeight: 300, // Featured Projects can go shorter
+      z: 10, isOpen: false, isMinimized: false, isMaximized: false 
+    },
   });
-
-  const handleCenter = (id, x, y) => {
-    setWindowState(prev => ({
-      ...prev,
-      [id]: { ...prev[id], x, y }
-    }));
-  };
 
   const updateWin = (id, updates) => {
     const newZ = maxZ + 1;
@@ -35,71 +34,62 @@ function App() {
   };
 
   const handleStartDrag = (id, e) => {
-    updateWin(id, { isMinimized: false }); // Bring to front
+    if (windowState[id].isMaximized) return;
+    updateWin(id, { isMinimized: false });
     setDraggingId(id);
-    setOffset({
-      x: e.clientX - windowState[id].x,
-      y: e.clientY - windowState[id].y
-    });
+    setOffset({ x: e.clientX - windowState[id].x, y: e.clientY - windowState[id].y });
   };
 
-const handleMouseMove = (e) => {
-  if (!draggingId) return;
+  const handleStartResize = (id, dir, e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setResizing({ id, dir });
+  };
 
-  // 1. Get the current screen and window dimensions
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const taskbarHeight = 48; // 3rem
-  const edgeBuffer = 100;   // Exactly 100px remains on screen
+  const handleMouseMove = (e) => {
+    if (draggingId) {
+      setWindowState(prev => ({
+        ...prev,
+        [draggingId]: { ...prev[draggingId], x: e.clientX - offset.x, y: e.clientY - offset.y }
+      }));
+    }
 
-  // 2. DYNAMIC MEASUREMENT: Get the actual width of the specific window
-  // We use the ID to find the element
-  const modalElement = document.querySelector(`.modal_root`); 
-  const winWidth = modalElement ? modalElement.getBoundingClientRect().width : 700;
+    if (resizing.id) {
+  setWindowState(prev => {
+    const win = prev[resizing.id];
+    let { x, y, width, height, minWidth, minHeight } = win;
+    const dir = resizing.dir;
 
-  let newX = e.clientX - offset.x;
-  let newY = e.clientY - offset.y;
+    // Use specific constraints or fall back to defaults
+    const mWidth = minWidth || 300;
+    const mHeight = minHeight || 200;
 
-  // --- DYNAMIC CLAMPING ---
+    // RIGHT / LEFT
+    if (dir.includes('r')) width = Math.max(mWidth, e.clientX - x);
+    if (dir.includes('l')) {
+      const newWidth = width + (x - e.clientX);
+      if (newWidth > mWidth) { width = newWidth; x = e.clientX; }
+    }
 
-  // LEFT LIMIT: (Negative value) 
-  // If winWidth is 1000px, leftLimit is -900px.
-  const leftLimit = -(winWidth - edgeBuffer);
+    // BOTTOM / TOP
+    if (dir.includes('b')) height = Math.max(mHeight, e.clientY - y);
+    if (dir.includes('t')) {
+      const newHeight = height + (y - e.clientY);
+      if (newHeight > mHeight) { height = newHeight; y = e.clientY; }
+    }
 
-  // RIGHT LIMIT:
-  // How far right the left edge can go.
-  const rightLimit = screenWidth - edgeBuffer;
+    return { ...prev, [resizing.id]: { ...win, x, y, width, height } };
+  });
+}
+  };
 
-  newX = Math.max(leftLimit, Math.min(newX, rightLimit));
-
-  // Y-AXIS (Title bar safety)
-  newY = Math.max(0, Math.min(newY, screenHeight - taskbarHeight - 40));
-
-  // --- RESTORE FROM MAXIMIZE ---
-  const currentWin = windowState[draggingId];
-  if (currentWin.isMaximized) {
-    // When pulling down, we center it based on the actual width we measured
-    newX = e.clientX - (winWidth / 2);
-    newY = e.clientY - 20;
-    
-    setWindowState(prev => ({
-      ...prev,
-      [draggingId]: { ...prev[draggingId], isMaximized: false, x: newX, y: newY }
-    }));
-    setOffset({ x: winWidth / 2, y: 20 });
-    return;
-  }
-
-  setWindowState(prev => ({
-    ...prev,
-    [draggingId]: { ...prev[draggingId], x: newX, y: newY }
-  }));
-};
-
-  const handleMouseUp = () => setDraggingId(null);
+  const handleMouseUp = () => {
+    setDraggingId(null);
+    setResizing({ id: null, dir: null });
+  };
 
   useEffect(() => {
-    if (draggingId) {
+    if (draggingId || resizing.id) {
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
     }
@@ -107,40 +97,29 @@ const handleMouseMove = (e) => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [draggingId, offset]);
+  }, [draggingId, resizing]);
 
   return (
     <div className="os-container">
       <div className="wallpaper"/>
       <div className="desktop">
-        <DesktopIcon 
-          icon="hn hn-user-solid" 
-          iconName="About Me"
-          modalContent={<Aboutme />}
-          windowPos={windowState["About Me"]}
-          onOpen={() => updateWin("About Me", { isOpen: true, isMinimized: false })}
-          onClose={() => updateWin("About Me", { isOpen: false })}
-          onMinimize={() => updateWin("About Me", { isMinimized: true })}
-          onMaximize={() => updateWin("About Me", { isMaximized: !windowState["About Me"].isMaximized })}
-          onStartDrag={(e) => handleStartDrag("About Me", e)}
-        />
-        <DesktopIcon 
-          icon="hn hn-folder-solid" 
-          iconName="Featured Projects"
-          modalContent={<Projects/>}
-          windowPos={windowState["Featured Projects"]}
-          onOpen={() => updateWin("Featured Projects", { isOpen: true, isMinimized: false })}
-          onClose={() => updateWin("Featured Projects", { isOpen: false })}
-          onMinimize={() => updateWin("Featured Projects", { isMinimized: true })}
-          onMaximize={() => updateWin("Featured Projects", { isMaximized: !windowState["Featured Projects"].isMaximized })}
-          onStartDrag={(e) => handleStartDrag("Featured Projects", e)}
-        />
-        {/* Repeat exactly for Contact and Mini Games... */}
+        {Object.keys(windowState).map((id) => (
+          <DesktopIcon 
+            key={id} id={id}
+            icon={id === "About Me" ? "hn hn-user-solid" : "hn hn-folder-solid"} 
+            iconName={id}
+            modalContent={id === "About Me" ? <Aboutme /> : <Projects />}
+            windowPos={windowState[id]}
+            onOpen={() => updateWin(id, { isOpen: true, isMinimized: false })}
+            onClose={() => updateWin(id, { isOpen: false })}
+            onMinimize={() => updateWin(id, { isMinimized: true })}
+            onMaximize={() => updateWin(id, { isMaximized: !windowState[id].isMaximized })}
+            onStartDrag={(e) => handleStartDrag(id, e)}
+            onStartResize={(dir, e) => handleStartResize(id, dir, e)}
+          />
+        ))}
       </div>
-      <Taskbar 
-        windowState={windowState} 
-        onTaskClick={(id) => updateWin(id, { isMinimized: !windowState[id].isMinimized })}
-      />
+      <Taskbar windowState={windowState} onTaskClick={(id) => updateWin(id, { isMinimized: !windowState[id].isMinimized })} />
     </div>
   )
 }
