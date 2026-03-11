@@ -25,32 +25,30 @@ export default function Projects() {
     return (
         <div className='projects_container'>
             <div className='projects_topbar'>
-                <div style={{
-                    color:"rgb(113, 113, 113)",
-                    display:'flex', gap:"40px", 
-                    marginLeft:"20px",
-                    justifyContent:"center",
-                    alignItems:"center"
-                    }}>
+                <div className='projects_topbar_icons'
+                >
 
-                    <i class="hn hn-arrow-left-solid"></i>
-                    <i class="hn hn-arrow-right-solid"></i>
-                    <i class="hn hn-arrow-up-solid"></i>
+                    <i className="hn hn-arrow-left-solid"></i>
+                    <i className="hn hn-arrow-right-solid"></i>
+                    <i className="hn hn-arrow-up-solid"></i>
                     <i 
                         className="hn hn-refresh-solid refresh-btn-icon" 
                         onClick={handleRefresh}
                         role="button"
                         tabIndex={0}
                     ></i>
+                </div>
 
                     <div style={{
                         background:"rgb(56, 56, 56)", 
                         width:"40vw", height:"2rem",
-                        borderRadius:"5px"
+                        display:"flex",
+                        borderRadius:"5px",
+                        alignItems:"center",
+                        justifyContent:"center",
                         }}>
-                        asdasdasd
+                        searchbar
                     </div>
-                </div>
             </div>
             <div className='projects_parentbox'>
                 {isLoading ? (

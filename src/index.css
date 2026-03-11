@@ -247,6 +247,28 @@ will-change: transform, opacity;
     align-items: center;
 }
 
+.projects_topbar_icons{
+    color:"rgb(113, 113, 113)";
+    display:flex; 
+    gap:40px; 
+    margin-left:20px;
+    justify-content:center;
+    align-items:center;
+    padding-right: 40px;
+}
+
+i.hn-refresh-solid {
+    cursor: pointer;
+    color: white;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Hover State */
+i.hn-refresh-solid:hover {
+    transform: rotate(180deg);
+    color: #ffffff;
+}
+
 .projects_parentbox{
     display: flex;
     flex-direction: row;
@@ -267,25 +289,15 @@ will-change: transform, opacity;
 }
 
 .projects_box3{
-    background-color: rgb(25, 25, 25);
+    background-color: rgb(32, 32, 32);
     width: 20vw;
     height: 100%;
     border-left: solid 1px rgb(43, 43, 43);
 }
 
-i.hn-refresh-solid {
-    cursor: pointer;
-    padding: 4px 8px; 
-    border-radius: 4px;
-    color: white;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
 
-/* Hover State */
-i.hn-refresh-solid:hover {
-    transform: rotate(180deg);
-    color: #ffffff;
-}
+
+
 
 
 
@@ -300,7 +312,7 @@ i.hn-refresh-solid:hover {
     .modal_content {
         margin: 1rem;
         max-height: calc(100vh - 1rem);
-        max-width: 400px;
+        max-width: 600px;
         overflow-y: auto;
     }
     .Typewriter {
@@ -326,6 +338,31 @@ i.hn-refresh-solid:hover {
     .projects_container{
         min-width: 300px;
         max-width: 600px;
+    }
+
+    .projects_topbar_icons{
+        display: none;
+    }
+
+    .projects_container{
+        width: 90vw;
+        background-color: rgb(25, 25, 25);
+        color: white;
+        height: 80vh;
+        max-height: 90vh;
+        overflow-y: auto;
+        user-select: none;
+        font-style: 'SegoeUIVF';
+        display: flex;
+        flex-direction: column;
+    }
+
+    .projects_box1{
+        display: none;
+    }
+
+    .projects_box3{
+        display: none;
     }
     
 }
