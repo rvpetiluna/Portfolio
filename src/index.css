@@ -2,15 +2,15 @@
 
 @font-face {
   font-family: 'Minecraft';
-  src: url('./fonts/Minecraft.ttf') format('woff2'),;
+  src: url('./fonts/Minecraft.ttf') format('woff2');
   font-weight: normal;
   font-style: normal;
-  font-display: swap; /* Helps prevent flash of unstyled text */
+
 }
 
 @font-face {
   font-family: 'VCR_OSD_MONO';
-  src: url('./fonts/VCR_OSD_MONO_1.001.ttf') format('woff2'),;
+  src: url('./fonts/VCR_OSD_MONO_1.001.ttf') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap; /* Helps prevent flash of unstyled text */
@@ -37,19 +37,17 @@
 }
 
 .wallpaper {
-    background-image: url('./assests/city of tears.gif'); 
-    height: 100vh;
-    width: 100vw;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: -1; 
+    width: 100vw; 
+    height: 100vh;
+    z-index: -1; /* Behind the desktop */
+    background-image: url('./assests/city of tears.gif'); 
+    background-size: cover;
+    background-position: center;
     image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
+
 }
 
 .taskbar {
@@ -66,6 +64,7 @@
     font-family: 'Minecraft', sans-serif;
     padding-left: 1rem;
     user-select: none;
+    z-index: 2; /* Above desktop */
 }
 
 .taskbar_date_time {
@@ -76,6 +75,45 @@
     text-align: center;
     justify-content: center;
     width: 150px;
+}
+
+.running_apps {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    margin: 0 10px;
+    height: 100%;
+    align-items: center;
+}
+
+.task_item {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 2px 8px;
+    min-width: 120px;
+    max-width: 160px;
+    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task_item.active {
+    background: #e0e0e0;
+    border: 2px inset #fff;
+    font-weight: bold;
+}
+
+.task_item:hover {
+    background: #d1d1d1;
+}
+
+.title_controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
 }
 
 .icon_name {
@@ -89,15 +127,34 @@
     user-select: none;
     cursor: pointer;
 }
+
+.icon_image_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
 .desktop_animation_wrapper {
-will-change: transform, opacity;
+    will-change: transform, opacity;
     animation: explorerPop 0.2s cubic-bezier(0, 0, 0, 1) forwards;
+    min-width: 400px;
+    min-height: 300px;
+    
+    /* FIX: Set a solid background color here too */
+    background-color: rgb(30, 30, 30); 
+    display: flex;
+    flex-direction: column;
+
+    /* ADD: This creates the crisp Windows 11-style border */
+    border: 1px solid rgb(69, 69, 72);
+    border-radius: 5px;
+    overflow: hidden; /* This forces the title_bar to respect the radius */
 }
 
 .desktop_icon_wrapper {
-    height: 104px;
-    width: 104px;
-    margin: 5px;
+    width: 100px;
+    user-select: none;
 }
 
 .desktop_icon_container {
@@ -122,66 +179,71 @@ will-change: transform, opacity;
 }
 
 .desktop {
+    position: relative;
+    height: calc(100vh - 3rem - 20px); /* Adjust for taskbar height */
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-items: center;
-    overflow-y: auto;
+    flex-wrap: wrap; /* Allows icons to flow to the next column if many exist */
+    align-content: flex-start;
+    gap: 15px;
+    z-index: 1; /* Ensure icons stay above wallpaper */
 }
 
 .title_bar {
     display: flex;
     flex-direction: row;
-    border-radius: 5px 5px 0 0;
+    /* FIX: Remove border-radius here as the wrapper handles it via overflow:hidden */
+    border-radius: 0; 
     user-select: none;
     background-color: rgb(30, 30, 30);
     justify-content: space-between;
     align-items: center;
     color: white;
+    padding: 10px;
     font-family: 'Minecraft', sans-serif;
-}
-
-.title_bar_button {
-    height: 30px;
-    width: 40px;
-    border-radius: 0px 5px 0 0;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-}
-
-.title_bar_button:hover {
-    background-color: rgb(232, 17, 35);
+    /* ADD: Ensures no gap at the bottom of the title bar */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
 }
 
 /* Modal transitions */
 .modal_root {
-    position: fixed;
-    inset: 0;
+    position: fixed !important;
+    transform: none !important;
+    display: block !important;
+    margin: 0;
+    background-color: rgba(255, 0, 0, 0);
+}
+
+.modal_handle {
+    height: 40px; 
     display: flex;
     align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    background: rgba(0,0,0,0);
-    transition: background 220ms ease-in-out;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #eee;
+    cursor: grab;
+}
+
+.modal_handle:hover {
+    background-color: #f9f9f9;
+}
+
+.modal_title {
+    font-family: 'SegoeUIVF', sans-serif;
+    font-weight: 600;
+    color: #333;
+    margin-right: auto;
 }
 
 .modal_root.modal_visible {
-    background: rgba(0, 0, 0, 0.600);
+    background: rgba(255, 255, 255, 0);
 }
 
-.modal_content {
-    border-radius: 5px;
-    height: auto;
-    max-width: auto;
-    max-height: 90vh; 
-    overflow-y: auto; 
-    opacity: 0;
-    transition: transform 220ms ease-in-out, opacity 220ms ease-in-out;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+.modal_body_content {
+    flex-grow: 1;
+    overflow: auto;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .modal_content.modal_content_visible {
